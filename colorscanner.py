@@ -1,6 +1,7 @@
 import time
 import RPi.GPIO as gpio
 import sys
+import numpy as np
 
 
 class colorscanner:
@@ -18,24 +19,32 @@ class colorscanner:
     gpio.setup(self.s3, gpio.OUT)
     gpio.setup(self.oe, gpio.OUT)
     gpio.setup(self.fin, gpio.IN)
-    self.interval = 1
+    self.samplefreq = 1000
+    self.nrsamples = 100
+
 
   def readpwm(self):
-    t_start = time.time()
-    count = 0
-    value = 0
+    signal = np.zeros((self.nrsamples, 2))
+
     gpio.output(self.oe, gpio.HIGH)
-    while time.time() < t_start + self.interval:
-      if gpio.input(self.fin) and not value:
-        count += 1
-        value = 1
-      elif not gpio.input(self.fin) and value:
-        value = 0
+    t_last = time.time()
+
+    for i in np.range(0, self.nrsamples):
+      while (time.time() < t_last + 1/self.samplefreq):
+        #set frequency
+        k=0
+
+
+      t_last = time.time()
+      signal[i, 0] = gpio.input(self.fin)
+      signal[i, 1] = t_last
+
+
     gpio.output(self.oe, gpio.LOW)
-    return count
+    return signal
 
   def readwrgb(self):
-    result = [0, 0, 0, 0]
+    result = np.zeros(4)
 
     gpio.output(self.s0, gpio.LOW)
     gpio.output(self.s1, gpio.HIGH)
@@ -43,22 +52,42 @@ class colorscanner:
     # read white
     gpio.output(self.s2, gpio.HIGH)
     gpio.output(self.s3, gpio.LOW)
-    result[0] = self.readpwm()
+    signal = self.readpwm()
+    amp_dB = np.abs(np.fft.fft(signal[:,0]))
+    freq_Hz = np.fft.fftfreq(signal[:,1].shape[-1])
+    amp_dB = amp_dB[freq_Hz>0]
+    freq_Hz = freq_Hz[freq_Hz>0]
+    result[0] = freq_Hz[np.argmax(amp_dB)]
 
     # read red
     gpio.output(self.s2, gpio.LOW)
     gpio.output(self.s3, gpio.LOW)
-    result[1] = self.readpwm()
+    signal = self.readpwm()
+    amp_dB = np.abs(np.fft.fft(signal[:,0]))
+    freq_Hz = np.fft.fftfreq(signal[:,1].shape[-1])
+    amp_dB = amp_dB[freq_Hz>0]
+    freq_Hz = freq_Hz[freq_Hz>0]
+    result[1] = freq_Hz[np.argmax(amp_dB)]
 
     # read green
     gpio.output(self.s2, gpio.HIGH)
     gpio.output(self.s3, gpio.HIGH)
-    result[2] = self.readpwm()
+    signal = self.readpwm()
+    amp_dB = np.abs(np.fft.fft(signal[:,0]))
+    freq_Hz = np.fft.fftfreq(signal[:,1].shape[-1])
+    amp_dB = amp_dB[freq_Hz>0]
+    freq_Hz = freq_Hz[freq_Hz>0]
+    result[2] = freq_Hz[np.argmax(amp_dB)]
 
     # read blue
     gpio.output(self.s2, gpio.LOW)
     gpio.output(self.s3, gpio.HIGH)
-    result[3] = self.readpwm()
+    signal = self.readpwm()
+    amp_dB = np.abs(np.fft.fft(signal[:,0]))
+    freq_Hz = np.fft.fftfreq(signal[:,1].shape[-1])
+    amp_dB = amp_dB[freq_Hz>0]
+    freq_Hz = freq_Hz[freq_Hz>0]
+    result[3] = freq_Hz[np.argmax(amp_dB)]
 
     return result
 
