@@ -1,0 +1,12 @@
+# Farbsensor
+s0 = GPIO17
+s1 = GPIO27
+s2 = GPIO22
+s3 = GPIO05
+OE = GPIO06
+OUT = GPIO26
+
+# Servos
+servo_oben = GPIO23
+servo_unten = GPIO24
+rüttelmotor = GPIO25
