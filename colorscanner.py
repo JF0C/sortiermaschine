@@ -29,7 +29,7 @@ class colorscanner:
     gpio.output(self.oe, gpio.HIGH)
     t_last = time.time()
 
-    for i in np.range(0, self.nrsamples):
+    for i in range(0, self.nrsamples):
       while (time.time() < t_last + 1/self.samplefreq):
         #set frequency
         k=0

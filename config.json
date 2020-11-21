@@ -2,8 +2,8 @@
     "pickup": 160,
     "scan": 125,
     "eject": 70,
-    "notfound": 160,
-    "shake_intens": 0.5,
+    "notfound": 20,
+    "shake_intens": 1.0,
     "shake_long": 1000,
     "shake_short": 1000
 }

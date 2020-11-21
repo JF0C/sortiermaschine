@@ -36,6 +36,8 @@ def main():
     servo1.turn(config["scan"])
     time.sleep(0.3)
     color = scanner.readwrgb()
+    print("scanned: " + str(color[0]) + ", " + str(color[1]) + ", " + str(color[2]) + ", " + str(color[3]))
+    datacolor = []
     for n in range(5):
       for k in range(3):
         color[k] /= color[3]
@@ -48,6 +50,7 @@ def main():
         if approx < best_approx:
           best_approx = approx
           cname = k
+          datacolor = data[k]
       if best_approx < 0.0025: break
 
     if best_approx > 0.005:
@@ -55,6 +58,7 @@ def main():
       servo2.turn(config["notfound"])
       #servo2.turn_vel(positions["notfound"], 30)
     else:
+      print("best approximated color: " + str(datacolor[0]) + ", " + str(datacolor[1]) + ", " + str(datacolor[2]) + ", " + str(datacolor[3]))
       print("found color " + cname + " with error " + str(best_approx))
       #servo2.turn_vel(data[cname][4], 30)
       servo2.turn(data[cname][4])

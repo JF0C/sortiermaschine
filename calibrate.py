@@ -39,7 +39,7 @@ def main():
     cols = []
     for k in range(3):
       cols.append(scanner.readwrgb())
-      shaker1.shake(500, 0.6)
+      #shaker1.shake(500, 0.6)
     print(cols)
     color = []
     for k in range(4):
