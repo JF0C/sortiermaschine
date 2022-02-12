@@ -8,4 +8,4 @@ This is what the machine looks like:
 And this is what you can do with Bügelpearls:  
 <img src="https://github.com/JF0C/sortiermaschine/blob/main/src/IMG_5890.JPG" height="300"/>
 <img src="https://github.com/JF0C/sortiermaschine/blob/main/src/IMG_5891%202.JPG" height="300" />
-<img src="https://github.com/JF0C/sortiermaschine/blob/main/src/IMG_6701.JPG" height=300" />
+<img src="https://github.com/JF0C/sortiermaschine/blob/main/src/IMG_6701.JPG" height="300" />
