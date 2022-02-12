@@ -1,0 +1,9 @@
+{
+    "pickup": 160,
+    "scan": 125,
+    "eject": 70,
+    "notfound": 160,
+    "shake_intens": 0.5,
+    "shake_long": 1000,
+    "shake_short": 1000
+}
